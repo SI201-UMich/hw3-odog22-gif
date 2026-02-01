@@ -95,8 +95,25 @@ class CouponDispenser:
         Reminder: Use lists only (no dictionaries).
         """
         # TODO: Implement per instructions
-
-        pass
+        round_num = 0
+        while True:
+            round_num = len(self.customer_roster) + 1
+            user_input = input(f"Round {round_num} - Enter a name (or a comma-separated list), or type 'show' or 'exit': ")
+            user_input = user_input.strip()
+            if user_input == "exit":
+                print("Goodbye!")
+                break
+            elif user_input == "show":
+                for i in range(len(self.customer_roster)):
+                    coupon = self.coupon_cards[self.issued_indices[i]]
+                    print(f"{self.customer_roster[i]}: {coupon}")
+            else:
+                names = [name.strip() for name in user_input.split(",") if name.strip()]
+                for name in names:
+                    message = self.issue_coupon(name)
+                    if message.startswith("That person already has a coupon:"):
+                        print(message)
+        # pass
 
     def tally_distribution(self):
         """
@@ -114,7 +131,13 @@ class CouponDispenser:
             None
         """
         # TODO: Implement per instructions
-        pass
+        if not self.issued_indices:
+            print("Empty")
+            return
+        for coupon_id in range(len(self.coupon_cards)):
+            count = self.issued_indices.count(coupon_id)
+            print(f"{self.coupon_cards[coupon_id]} distribution count: {count}.")
+        # pass
 
 
 def main():
@@ -133,9 +156,9 @@ def main():
     ]
 
     # Uncomment the lines below as you implement each function.
-    # box = CouponDispenser(coupon_cards)
-    # box.distribute_session()
-    # box.tally_distribution()
+    box = CouponDispenser(coupon_cards)
+    box.distribute_session()
+    box.tally_distribution()
     pass
 
 
